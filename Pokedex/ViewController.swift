@@ -13,12 +13,18 @@ class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView! // tableView연결!
     // remember! dataSource + delegate!
     
+    var pokemonData = PokemonData () // Declare and initialize a property named pokemonData of type PokemonData
+    
     var pokeArray = ["Bulbasaur", "Pikachu", "Snorlax", "Wigglytuff", "Charmander"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+    
+        pokemonData.getData { //Call .getData on pokemonData and look at the returned, printed to the console. <아래 적힌 url이 잘 뜨는지 확인해라!>
+            //nothing here, yet. Look at the console!
+        }
     }
 
 

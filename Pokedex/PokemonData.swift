@@ -12,10 +12,12 @@ class PokemonData { // creating a class named PokemonData
     private struct Returned: Codable {
         var count: Int
         var next: String
+        var results: [Pokemon] // getting an array of Pokemon, named results.
     }
+    
     var url = "https://pokeapi.co/api/v2/pokemon/"
     var count = 0
-    //It's a good idea to copy a working URL rather than risk typos
+    var pokeArray: [Pokemon] = [] // a property named pokeArray that is an empty array of Pokemon. --> initialized empty array!
     
     func getData(completed: @escaping () -> ()) { //escaping closure to get data until you've gotten the data
         let urlString = url // 바꿀껀, url 이랑 do 아래 있는애들
@@ -36,13 +38,21 @@ class PokemonData { // creating a class named PokemonData
             }
             
             do {
+                let returned = try JSONDecoder().decode(Returned.self, from: data!)
+                print("😎 Here is what you returned: \(returned)")
+                self.count = returned.count // Assigning the count and next properties of returned to the count and url properties of PokemonData
+                self.url = returned.next
+                for index in 0..<returned.results.count {
+                    self.pokeArray.append(returned.results[index]) //individual pokemon element from the array in "results"
+                    print("name: \(self.pokeArray[index].name), url: \(self.pokeArray[index].url)")
+                }
                 
             } catch {
-            print("😡 JSON ERROR: \(error.localizedDescription)")
+                print("😡 JSON ERROR: \(error.localizedDescription)")
+            }
+            completed()
         }
-        completed()
+        task.resume()
     }
-    task.resume()
-}
-
+    
 }
