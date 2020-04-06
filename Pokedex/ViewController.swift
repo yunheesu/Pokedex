@@ -26,7 +26,13 @@ class ViewController: UIViewController {
             }
         }
     }
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) { // showing name for each pokemon, when it's name is clicked!
+        if segue.identifier == "ShowSegue" {
+        let destination = segue.destination as! DetailViewController
+        let selectedIndexPath = tableView.indexPathForSelectedRow!
+            destination.pokemon = pokemonData.pokeArray[selectedIndexPath.row]
+        }
+    }
 
 }
 extension ViewController: UITableViewDelegate, UITableViewDataSource { // putting tableview calls into extension
